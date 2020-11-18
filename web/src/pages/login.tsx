@@ -11,13 +11,13 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 
 export const Login: React.FC<{}> = ({}) => {
   const router = useRouter();
-  const [_, login] = useLoginMutation();
+  const [, login] = useLoginMutation();
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await login({ options: values });
+          const response = await login(values);
           // console.log(response);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
@@ -29,9 +29,9 @@ export const Login: React.FC<{}> = ({}) => {
         {({ isSubmitting }) => (
           <Form>
             <InputField
-              name="username"
-              placeholder="username"
-              label="username"
+              name="usernameOrEmail"
+              placeholder="username or email"
+              label="username or email"
             />
             <Box mt={4}>
               <InputField
