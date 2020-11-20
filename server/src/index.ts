@@ -25,6 +25,9 @@ const main = async () => {
     entities: [Post, User],
   });
 
+  // Pour delete tous les posts en cas de conflit avec la db
+  // await Post.delete({});
+
   const app = express();
 
   const RedisStore = connectRedis(session);
