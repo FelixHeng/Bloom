@@ -14,7 +14,10 @@ import gql from "graphql-tag";
 //-------------------  An exchange for all errors  -------------------
 import { pipe, tap } from "wonka";
 import { Exchange, stringifyVariables } from "urql";
-import { VoteMutationVariables } from "../generated/graphql";
+import {
+  VoteMutationVariables,
+  DeletePostMutationVariables,
+} from "../generated/graphql";
 import { isServer } from "./isServer";
 
 const errorExchange: Exchange = ({ forward }) => (ops$) => {
@@ -71,7 +74,7 @@ const cursorPagination = (): Resolver => {
 export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   let cookie = "";
   if (isServer()) {
-    cookie = ctx.req.headers.cookie;
+    cookie = ctx?.req?.headers?.cookie;
   }
 
   return {
@@ -93,6 +96,12 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
         },
         updates: {
           Mutation: {
+            deletePost: (_result, args, cache, _info) => {
+              cache.invalidate({
+                __typename: "Post",
+                id: (args as DeletePostMutationVariables).id,
+              });
+            },
             vote: (_result, args, cache, _info) => {
               const { postId, value } = args as VoteMutationVariables;
               const data = cache.readFragment(
