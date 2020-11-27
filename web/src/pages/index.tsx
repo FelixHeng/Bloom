@@ -2,17 +2,17 @@ import { usePostsQuery } from "../generated/graphql";
 import { Layout } from "../components/Layout";
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/core";
 import NextLink from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { UpdootSection } from "../components/UpdootSection";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 
 const Index = () => {
-  const [variables, setVariables] = useState({
-    limit: 15,
-    cursor: null as null | string,
-  });
-  const { data, error, loading } = usePostsQuery({
-    variables,
+  const { data, error, loading, fetchMore, variables } = usePostsQuery({
+    variables: {
+      limit: 15,
+      cursor: null as null | string,
+    },
+    notifyOnNetworkStatusChange: true,
   });
 
   if (!loading && !data) {
@@ -61,9 +61,12 @@ const Index = () => {
         <Flex>
           <Button
             onClick={() => {
-              setVariables({
-                limit: variables.limit,
-                cursor: data.posts.posts[data.posts.posts.length - 1].createdAt,
+              fetchMore({
+                variables: {
+                  limit: variables?.limit,
+                  cursor:
+                    data.posts.posts[data.posts.posts.length - 1].createdAt,
+                },
               });
             }}
             isLoading={loading}
