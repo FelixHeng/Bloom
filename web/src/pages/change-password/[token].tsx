@@ -5,7 +5,11 @@ import React, { useState } from "react";
 import { InputField } from "../../components/InputField";
 import { Wrapper } from "../../components/Wrapper";
 import { toErrorMap } from "../../utils/toErrorMap";
-import { useChangePasswordMutation } from "../../generated/graphql";
+import {
+  useChangePasswordMutation,
+  MeQuery,
+  MeDocument,
+} from "../../generated/graphql";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import { withApollo } from "../../utils/withApollo";
@@ -26,6 +30,15 @@ export const ChangePassword: NextPage = () => {
                 typeof router.query.token === "string"
                   ? router.query.token
                   : "",
+            },
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.changePassword.user,
+                },
+              });
             },
           });
           if (response.data?.changePassword.errors) {
