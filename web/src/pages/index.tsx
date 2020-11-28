@@ -5,6 +5,7 @@ import NextLink from "next/link";
 import React from "react";
 import { UpdootSection } from "../components/UpdootSection";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
+import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
   const { data, error, loading, fetchMore, variables } = usePostsQuery({
@@ -80,4 +81,4 @@ const Index = () => {
     </Layout>
   );
 };
-export default Index;
+export default withApollo({ ssr: true })(Index);
