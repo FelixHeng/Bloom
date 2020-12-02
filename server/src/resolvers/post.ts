@@ -70,7 +70,9 @@ export class PostResolver {
     @Ctx() { req }: MyContext
   ) {
     const isUpdoot = value !== -1;
-    const realValue = isUpdoot ? 1 : -1;
+    let upvote = 0;
+    let downvote = 0;
+    const realValue = isUpdoot ? (upvote = 1) : (downvote = -1);
     const { userId } = req.session;
 
     const updoot = await Updoot.findOne({ where: { postId, userId } });
@@ -91,10 +93,12 @@ export class PostResolver {
         await tm.query(
           `
           update post
-          set points = points + $1
-          where id = $2
-        `,
-          [2 * realValue, postId]
+          set points = points + ${realValue},
+            upvote = upvote + ${upvote},
+            downvote = downvote + ${downvote} 
+          where id = ${postId}
+        `
+          // [realValue, postId]
         );
       });
     } else if (!updoot) {
@@ -111,10 +115,11 @@ export class PostResolver {
         await tm.query(
           `
     update post
-    set points = points + $1
-    where id = $2
-      `,
-          [realValue, postId]
+    set points = points + ${realValue},
+      upvote = upvote + ${upvote},
+      downvote = downvote +  ${downvote} 
+    where id = ${postId}
+      `
         );
       });
     }
