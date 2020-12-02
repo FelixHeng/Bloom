@@ -4,6 +4,8 @@ fragment PostSnippet on Post {
   updatedAt
   title
   points
+  upvote
+  downvote
   textSnippet
   voteStatus
   creator {

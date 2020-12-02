@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Flex, IconButton } from "@chakra-ui/core";
-import { ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { Flex, Icon, IconButton } from "@chakra-ui/core";
+import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import { AiOutlineFire } from "react-icons/ai";
 import { PostSnippetFragment, useVoteMutation } from "../generated/graphql";
 
 interface UpdootSectionProps {
@@ -14,43 +15,62 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
   const [, vote] = useVoteMutation();
   return (
     <Flex direction="column" justifyContent="center" alignItems="center" mr={4}>
-      <IconButton
-        onClick={async () => {
-          if (post.voteStatus === 1) {
-            return;
-          }
-          setLoadingState("updoot-loading");
-          await vote({
-            postId: post.id,
-            value: 1,
-          });
-          setLoadingState("not-loading");
-        }}
-        isLoading={loadingState === "updoot-loading"}
-        size="sm"
-        colorScheme={post.voteStatus === 1 ? "green" : undefined}
-        aria-label="updoot vote"
-        icon={<ChevronUpIcon />}
-      />
-      {post.points}
-      <IconButton
-        onClick={async () => {
-          if (post.voteStatus === -1) {
-            return;
-          }
-          setLoadingState("downdoot-loading");
-          await vote({
-            postId: post.id,
-            value: -1,
-          });
-          setLoadingState("not-loading");
-        }}
-        isLoading={loadingState === "downdoot-loading"}
-        size="sm"
-        colorScheme={post.voteStatus === -1 ? "red" : undefined}
-        aria-label="downdoot vote"
-        icon={<ChevronDownIcon />}
-      />
+      <Icon boxSize={10} as={AiOutlineFire} />
+      <Flex
+        direction="initial"
+        justifyContent="center"
+        alignItems="center"
+        mr={4}
+        ml={4}
+        mt={4}
+      >
+        {post.upvote}
+
+        <IconButton
+          onClick={async () => {
+            if (post.voteStatus === 1) {
+              return;
+            }
+            setLoadingState("updoot-loading");
+            await vote({
+              postId: post.id,
+              value: 1,
+            });
+            setLoadingState("not-loading");
+          }}
+          isLoading={loadingState === "updoot-loading"}
+          size="sm"
+          m={2}
+          variant="outline"
+          colorScheme={post.voteStatus === 1 ? "green" : undefined}
+          // colorScheme="white"
+          aria-label="updoot vote"
+          icon={<Icon as={FaRegThumbsUp} />}
+        />
+
+        <IconButton
+          onClick={async () => {
+            if (post.voteStatus === -1) {
+              return;
+            }
+            setLoadingState("downdoot-loading");
+            await vote({
+              postId: post.id,
+              value: -1,
+            });
+            setLoadingState("not-loading");
+          }}
+          isLoading={loadingState === "downdoot-loading"}
+          size="sm"
+          ml={4}
+          mr={2}
+          variant="outline"
+          colorScheme={post.voteStatus === -1 ? "red" : undefined}
+          aria-label="downdoot vote"
+          icon={<FaRegThumbsDown />}
+        />
+        {post.downvote}
+      </Flex>
     </Flex>
   );
 };
