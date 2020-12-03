@@ -13,6 +13,8 @@
     "@chakra-ui/icons": "^1.0.1",
     "@emotion/styled": "^10.0.27",
     "@urql/exchange-graphcache": "^3.1.11",
+    "axios": "^0.21.0",
+    "cloudinary-react": "^1.6.8",
     "emotion-theming": "^10.0.27",
     "formik": "^2.2.5",
     "framer-motion": "^2.9.4",

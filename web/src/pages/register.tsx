@@ -8,6 +8,8 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
+import { UploadFile } from "../components/UploadFile";
+import { Avatar } from "../components/Avatar";
 
 interface registerProps {}
 
@@ -30,6 +32,9 @@ export const Register: React.FC<registerProps> = ({}) => {
       >
         {({ isSubmitting }) => (
           <Form>
+            <UploadFile />
+            ////////////////////////////////
+            <Avatar />
             <InputField
               name="username"
               placeholder="username"
