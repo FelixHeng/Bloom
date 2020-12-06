@@ -58,6 +58,7 @@ export type User = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
+  avatar: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -73,6 +74,8 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  avatar: Scalars['String'];
+  chooseAvatar: User;
 };
 
 
@@ -118,6 +121,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationChooseAvatarArgs = {
+  publicId: Scalars['String'];
 };
 
 export type PostInput = {
@@ -184,6 +192,19 @@ export type ChangePasswordMutation = (
   & { changePassword: (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
+  ) }
+);
+
+export type AvatarMutationVariables = Exact<{
+  publicId: Scalars['String'];
+}>;
+
+
+export type AvatarMutation = (
+  { __typename?: 'Mutation' }
+  & { chooseAvatar: (
+    { __typename?: 'User' }
+    & Pick<User, 'avatar'>
   ) }
 );
 
@@ -377,6 +398,17 @@ export const ChangePasswordDocument = gql`
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
+export const AvatarDocument = gql`
+    mutation avatar($publicId: String!) {
+  chooseAvatar(publicId: $publicId) {
+    avatar
+  }
+}
+    `;
+
+export function useAvatarMutation() {
+  return Urql.useMutation<AvatarMutation, AvatarMutationVariables>(AvatarDocument);
 };
 export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {

@@ -8,8 +8,6 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { UploadFile } from "../components/UploadFile";
-import { Avatar } from "../components/Avatar";
 
 interface registerProps {}
 
@@ -26,15 +24,12 @@ export const Register: React.FC<registerProps> = ({}) => {
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
-            router.push("/");
+            router.push("/choose-avatar");
           }
         }}
       >
         {({ isSubmitting }) => (
           <Form>
-            <UploadFile />
-            ////////////////////////////////
-            <Avatar />
             <InputField
               name="username"
               placeholder="username"
