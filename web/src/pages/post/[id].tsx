@@ -4,8 +4,10 @@ import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useRouter } from "next/router";
 import { usePostQuery } from "../../generated/graphql";
 import { Layout } from "../../components/Layout";
-import { Heading, Box } from "@chakra-ui/core";
+import { Heading, Box, Link } from "@chakra-ui/core";
 import { EditDeletePostButtons } from "../../utils/EditDeletePostButtons";
+import { Image } from "cloudinary-react";
+import NextLink from "next/link";
 
 const Post = ({}) => {
   const router = useRouter();
@@ -46,6 +48,13 @@ const Post = ({}) => {
         id={data.post.id}
         creatorId={data.post.creator.id}
       />
+      <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}>
+        <Image
+          style={{ width: 100 }}
+          cloudName="felixh"
+          publicId={data?.post?.creator.avatar}
+        />
+      </NextLink>
     </Layout>
   );
 };

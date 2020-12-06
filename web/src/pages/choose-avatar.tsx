@@ -10,18 +10,18 @@ interface AvatarProps {}
 export const Avatar: React.FC<AvatarProps> = ({}) => {
   useIsAuth();
   const [imageSelected, setImageSelected] = useState("");
-  const [publicId, setPublicId] = useState("");
+  const [public_Id, setPublic_Id] = useState("");
   const [previewSource, setPreviewSource] = useState("");
   const [, getPublicId] = useAvatarMutation();
 
   useEffect(() => {
-    if (!publicId) {
+    if (!public_Id) {
       return;
     }
     getPublicId({
-      publicId: publicId,
+      publicId: public_Id,
     });
-  }, [publicId]);
+  }, [public_Id]);
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -45,9 +45,9 @@ export const Avatar: React.FC<AvatarProps> = ({}) => {
     formData.append("upload_preset", "bloompictures");
     axios
       .post("https://api.cloudinary.com/v1_1/felixh/image/upload", formData)
-      .then((response) => setPublicId(response.data.public_id));
+      .then((response) => setPublic_Id(response.data.public_id));
   };
-  console.log("publicId", publicId);
+  console.log("publicId", public_Id);
   return (
     <div>
       <input type="file" onChange={handleFileInputChange} />

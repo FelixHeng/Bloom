@@ -74,7 +74,6 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-  avatar: Scalars['String'];
   chooseAvatar: User;
 };
 
@@ -325,7 +324,7 @@ export type PostQuery = (
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'upvote' | 'downvote' | 'text' | 'voteStatus'>
     & { creator: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & Pick<User, 'id' | 'username' | 'avatar'>
     ) }
   )> }
 );
@@ -525,6 +524,7 @@ export const PostDocument = gql`
     creator {
       id
       username
+      avatar
     }
   }
 }

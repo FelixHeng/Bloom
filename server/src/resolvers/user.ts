@@ -9,6 +9,7 @@ import {
   FieldResolver,
   Root,
   UseMiddleware,
+  Int,
 } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from "../entities/User";
