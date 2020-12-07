@@ -69,7 +69,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
           aria-label="downdoot vote"
           icon={<FaRegThumbsDown />}
         />
-        {post.downvote}
+        {Math.abs(post.downvote)}
       </Flex>
     </Flex>
   );

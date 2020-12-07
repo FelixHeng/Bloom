@@ -70,9 +70,21 @@ export class PostResolver {
     @Ctx() { req }: MyContext
   ) {
     const isUpdoot = value !== -1;
-    let upvote = 0;
-    let downvote = 0;
-    const realValue = isUpdoot ? (upvote = 1) : (downvote = -1);
+    const realValue = isUpdoot ? 1 : -1;
+    let changeVote = {
+      upvote: 0,
+      downvote: 0,
+    };
+    const changePoints = isUpdoot
+      ? ((changeVote.upvote = 1), (changeVote.downvote = -1))
+      : ((changeVote.downvote = 1), (changeVote.upvote = -1));
+    const initialVote = {
+      upvote: 0,
+      downvote: 0,
+    };
+    const firstVote = isUpdoot
+      ? (initialVote.upvote = 1)
+      : (initialVote.downvote = 1);
     const { userId } = req.session;
 
     const updoot = await Updoot.findOne({ where: { postId, userId } });
@@ -94,11 +106,10 @@ export class PostResolver {
           `
           update post
           set points = points + ${realValue},
-            upvote = upvote + ${upvote},
-            downvote = downvote + ${downvote} 
+            upvote = upvote + ${changeVote.upvote},
+            downvote = downvote + ${changeVote.downvote} 
           where id = ${postId}
         `
-          // [realValue, postId]
         );
       });
     } else if (!updoot) {
@@ -116,8 +127,8 @@ export class PostResolver {
           `
     update post
     set points = points + ${realValue},
-      upvote = upvote + ${upvote},
-      downvote = downvote +  ${downvote} 
+      upvote = upvote + ${initialVote.upvote},
+      downvote = downvote +  ${initialVote.downvote} 
     where id = ${postId}
       `
         );

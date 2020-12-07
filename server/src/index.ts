@@ -32,7 +32,7 @@ const main = async () => {
   await conn.runMigrations();
 
   // Pour delete tous les posts en cas de conflit avec la db
-  // await Post.delete({});
+  // await Updoot.delete({});
 
   const app = express();
 
