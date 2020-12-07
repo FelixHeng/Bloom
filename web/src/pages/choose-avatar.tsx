@@ -4,15 +4,21 @@ import React, { useEffect, useState } from "react";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useAvatarMutation } from "../generated/graphql";
 import { useIsAuth } from "../utils/useIsAuth";
+import { Layout } from "../components/Layout";
+import { Button, Img, Input, Box, Heading } from "@chakra-ui/core";
+import { useDropzone } from "react-dropzone";
+import { useRouter } from "next/router";
 
 interface ChooseAvatarProps {}
 
 export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
   useIsAuth();
+  const router = useRouter();
   const [imageSelected, setImageSelected] = useState("");
   const [public_Id, setPublic_Id] = useState("");
   const [previewSource, setPreviewSource] = useState("");
   const [, getPublicId] = useAvatarMutation();
+  const { getRootProps, getInputProps } = useDropzone();
 
   useEffect(() => {
     if (!public_Id) {
@@ -38,24 +44,67 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
     };
   };
 
-  const uploadImage = (files: string) => {
+  const uploadImage = async (files: string) => {
     console.log(files[0]);
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "bloompictures");
-    axios
+    await axios
       .post("https://api.cloudinary.com/v1_1/felixh/image/upload", formData)
       .then((response) => setPublic_Id(response.data.public_id));
+    router.push("/");
   };
   console.log("publicId", public_Id);
   return (
-    <div>
-      <input type="file" onChange={handleFileInputChange} />
-      <button onClick={uploadImage}>Upload Image</button>
-      {previewSource && (
-        <img src={previewSource} alt="chosen" style={{ height: "300px" }} />
-      )}
-    </div>
+    <Box
+      bgImage="url(https://wallpaperaccess.com/download/dark-hd-flowers-1749368)"
+      bgSize="cover"
+      bgRepeat="no-repeat"
+    >
+      <Layout>
+        <Box align="center" flexDirection="column">
+          <Heading color="white" mt="5em">
+            CHOOSE AN AVATAR
+          </Heading>
+          <Box
+            {...getRootProps()}
+            type="file"
+            bg="white"
+            borderRadius="300px"
+            height="300px"
+            width="300px"
+            cursor="pointer"
+            mt="5em"
+          >
+            <Input {...getInputProps()} onChange={handleFileInputChange} />
+            <p>
+              {previewSource ? (
+                <Img
+                  src={previewSource}
+                  alt="chosen"
+                  height="300px"
+                  borderRadius="300px"
+                  // pb="2em"
+                  // style={{ height: "300px", }}
+                />
+              ) : (
+                <Img
+                  src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+                  height="300px"
+                  borderRadius="300px"
+                />
+              )}
+            </p>
+          </Box>
+
+          <Box align="center" pb="20em">
+            <Button onClick={uploadImage} mt="3em">
+              Upload Image
+            </Button>
+          </Box>
+        </Box>
+      </Layout>
+    </Box>
   );
 };
 

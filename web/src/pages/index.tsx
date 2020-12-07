@@ -40,8 +40,8 @@ const Index = () => {
                     />
                   </Link>
                 </NextLink>
-                <UpdootSection post={p} />
-                <Box flex={1}>
+
+                <Box flex={1} ml={8}>
                   <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                     <Link>
                       <Heading fontSize="xl">{p.title}</Heading>
@@ -52,6 +52,7 @@ const Index = () => {
                     <Text mt={4} flex={1}>
                       {p.textSnippet}
                     </Text>
+                    <Box></Box>
                     <Box ml="auto">
                       <EditDeletePostButtons
                         id={p.id}
@@ -59,6 +60,9 @@ const Index = () => {
                       />
                     </Box>
                   </Flex>
+                  <Box width={100} align="left">
+                    <UpdootSection post={p} />
+                  </Box>
                 </Box>
               </Flex>
             )
