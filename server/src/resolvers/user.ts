@@ -250,13 +250,24 @@ export class UserResolver {
     @Arg("publicId") publicId: string,
     @Ctx() { req }: MyContext
   ) {
-    await getConnection()
+    const result = await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({ avatar: publicId })
       .where("id = :id", {
         id: req.session.userId,
       })
+      .returning("*")
       .execute();
+    return result.raw[0];
+  }
+
+  @Query(() => User, { nullable: true })
+  avatar(@Arg("id", () => Int) id: number): Promise<User | undefined> {
+    const avatar = User.findOne(id);
+    if (!avatar) {
+      return null as any;
+    }
+    return avatar;
   }
 }

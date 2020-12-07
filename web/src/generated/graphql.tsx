@@ -18,6 +18,7 @@ export type Query = {
   posts: PaginatedPosts;
   post?: Maybe<Post>;
   me?: Maybe<User>;
+  avatar?: Maybe<User>;
 };
 
 
@@ -28,6 +29,11 @@ export type QueryPostsArgs = {
 
 
 export type QueryPostArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryAvatarArgs = {
   id: Scalars['Int'];
 };
 
@@ -58,7 +64,7 @@ export type User = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
-  avatar: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -155,7 +161,7 @@ export type PostSnippetFragment = (
   & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'upvote' | 'downvote' | 'textSnippet' | 'voteStatus'>
   & { creator: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    & Pick<User, 'id' | 'username' | 'avatar'>
   ) }
 );
 
@@ -301,6 +307,19 @@ export type VoteMutation = (
   & Pick<Mutation, 'vote'>
 );
 
+export type GetAvatarQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetAvatarQuery = (
+  { __typename?: 'Query' }
+  & { avatar?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'avatar'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -361,6 +380,7 @@ export const PostSnippetFragmentDoc = gql`
   creator {
     id
     username
+    avatar
   }
 }
     `;
@@ -497,6 +517,17 @@ export const VoteDocument = gql`
 
 export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
+};
+export const GetAvatarDocument = gql`
+    query getAvatar($id: Int!) {
+  avatar(id: $id) {
+    avatar
+  }
+}
+    `;
+
+export function useGetAvatarQuery(options: Omit<Urql.UseQueryArgs<GetAvatarQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAvatarQuery>({ query: GetAvatarDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

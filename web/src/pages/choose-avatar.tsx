@@ -5,9 +5,9 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { useAvatarMutation } from "../generated/graphql";
 import { useIsAuth } from "../utils/useIsAuth";
 
-interface AvatarProps {}
+interface ChooseAvatarProps {}
 
-export const Avatar: React.FC<AvatarProps> = ({}) => {
+export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
   useIsAuth();
   const [imageSelected, setImageSelected] = useState("");
   const [public_Id, setPublic_Id] = useState("");
@@ -59,4 +59,4 @@ export const Avatar: React.FC<AvatarProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Avatar);
+export default withUrqlClient(createUrqlClient)(ChooseAvatar);

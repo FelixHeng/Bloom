@@ -7,6 +7,7 @@ import NextLink from "next/link";
 import React, { useState } from "react";
 import { UpdootSection } from "../components/UpdootSection";
 import { EditDeletePostButtons } from "../utils/EditDeletePostButtons";
+import { Image } from "cloudinary-react";
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -29,6 +30,16 @@ const Index = () => {
           {data?.posts.posts.map((p) =>
             !p ? null : (
               <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
+                <NextLink href="/avatar/[id]" as={`/avatar/${p.creator.id}`}>
+                  <Link>
+                    <Heading fontSize="xl">{p.creator.username}</Heading>
+                    <Image
+                      style={{ width: 100 }}
+                      cloudName="felixh"
+                      publicId={p.creator.avatar}
+                    />
+                  </Link>
+                </NextLink>
                 <UpdootSection post={p} />
                 <Box flex={1}>
                   <NextLink href="/post/[id]" as={`/post/${p.id}`}>
