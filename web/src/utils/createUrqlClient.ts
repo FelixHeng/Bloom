@@ -147,8 +147,9 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
                     `,
                     {
                       id: postId,
-                      upvote: firstVote.firstUpVote,
-                      downvote: firstVote.firstDownVote,
+                      upvote: (data.upvote as number) + firstVote.firstUpVote,
+                      downvote:
+                        (data.downvote as number) + firstVote.firstDownVote,
                       voteStatus: value,
                     } as any
                   );
