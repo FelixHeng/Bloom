@@ -18,6 +18,7 @@ export type Query = {
   posts: PaginatedPosts;
   post?: Maybe<Post>;
   me?: Maybe<User>;
+  avatar?: Maybe<User>;
 };
 
 
@@ -28,6 +29,11 @@ export type QueryPostsArgs = {
 
 
 export type QueryPostArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryAvatarArgs = {
   id: Scalars['Int'];
 };
 
@@ -58,6 +64,7 @@ export type User = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -73,6 +80,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  chooseAvatar: User;
 };
 
 
@@ -120,6 +128,11 @@ export type MutationLoginArgs = {
   usernameOrEmail: Scalars['String'];
 };
 
+
+export type MutationChooseAvatarArgs = {
+  publicId: Scalars['String'];
+};
+
 export type PostInput = {
   title: Scalars['String'];
   text: Scalars['String'];
@@ -148,7 +161,7 @@ export type PostSnippetFragment = (
   & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'upvote' | 'downvote' | 'textSnippet' | 'voteStatus'>
   & { creator: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    & Pick<User, 'id' | 'username' | 'avatar'>
   ) }
 );
 
@@ -184,6 +197,19 @@ export type ChangePasswordMutation = (
   & { changePassword: (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
+  ) }
+);
+
+export type AvatarMutationVariables = Exact<{
+  publicId: Scalars['String'];
+}>;
+
+
+export type AvatarMutation = (
+  { __typename?: 'Mutation' }
+  & { chooseAvatar: (
+    { __typename?: 'User' }
+    & Pick<User, 'avatar'>
   ) }
 );
 
@@ -281,6 +307,19 @@ export type VoteMutation = (
   & Pick<Mutation, 'vote'>
 );
 
+export type GetAvatarQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetAvatarQuery = (
+  { __typename?: 'Query' }
+  & { avatar?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'avatar'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -304,7 +343,7 @@ export type PostQuery = (
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'upvote' | 'downvote' | 'text' | 'voteStatus'>
     & { creator: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & Pick<User, 'id' | 'username' | 'avatar'>
     ) }
   )> }
 );
@@ -341,6 +380,7 @@ export const PostSnippetFragmentDoc = gql`
   creator {
     id
     username
+    avatar
   }
 }
     `;
@@ -377,6 +417,17 @@ export const ChangePasswordDocument = gql`
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
+export const AvatarDocument = gql`
+    mutation avatar($publicId: String!) {
+  chooseAvatar(publicId: $publicId) {
+    avatar
+  }
+}
+    `;
+
+export function useAvatarMutation() {
+  return Urql.useMutation<AvatarMutation, AvatarMutationVariables>(AvatarDocument);
 };
 export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {
@@ -467,6 +518,17 @@ export const VoteDocument = gql`
 export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
 };
+export const GetAvatarDocument = gql`
+    query getAvatar($id: Int!) {
+  avatar(id: $id) {
+    avatar
+  }
+}
+    `;
+
+export function useGetAvatarQuery(options: Omit<Urql.UseQueryArgs<GetAvatarQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAvatarQuery>({ query: GetAvatarDocument, ...options });
+};
 export const MeDocument = gql`
     query Me {
   me {
@@ -493,6 +555,7 @@ export const PostDocument = gql`
     creator {
       id
       username
+      avatar
     }
   }
 }

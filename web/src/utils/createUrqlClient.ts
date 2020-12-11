@@ -128,35 +128,61 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
               if (data) {
                 if (data.voteStatus === value) {
                   return;
+                } else if (data.voteStatus === null) {
+                  const firstVote = {
+                    firstUpVote: 0,
+                    firstDownVote: 0,
+                  };
+                  value === 1
+                    ? (firstVote.firstUpVote = 1)
+                    : (firstVote.firstDownVote = 1);
+                  cache.writeFragment(
+                    gql`
+                      fragment __ on Post {
+                        points
+                        upvote
+                        downvote
+                        voteStatus
+                      }
+                    `,
+                    {
+                      id: postId,
+                      upvote: (data.upvote as number) + firstVote.firstUpVote,
+                      downvote:
+                        (data.downvote as number) + firstVote.firstDownVote,
+                      voteStatus: value,
+                    } as any
+                  );
+                } else {
+                  const newUpvote = (data.upvote as number) + value;
+                  cache.writeFragment(
+                    gql`
+                      fragment __ on Post {
+                        points
+                        upvote
+                        downvote
+                        voteStatus
+                      }
+                    `,
+                    { id: postId, upvote: newUpvote, voteStatus: value } as any
+                  );
+                  const newDownvote = (data.downvote as number) - value;
+                  cache.writeFragment(
+                    gql`
+                      fragment __ on Post {
+                        points
+                        upvote
+                        downvote
+                        voteStatus
+                      }
+                    `,
+                    {
+                      id: postId,
+                      downvote: newDownvote,
+                      voteStatus: value,
+                    } as any
+                  );
                 }
-                const newUpvote = (data.upvote as number) + value;
-                cache.writeFragment(
-                  gql`
-                    fragment __ on Post {
-                      points
-                      upvote
-                      downvote
-                      voteStatus
-                    }
-                  `,
-                  { id: postId, upvote: newUpvote, voteStatus: value } as any
-                );
-                const newDownvote = (data.downvote as number) + value;
-                cache.writeFragment(
-                  gql`
-                    fragment __ on Post {
-                      points
-                      downvote
-                      downvote
-                      voteStatus
-                    }
-                  `,
-                  {
-                    id: postId,
-                    downvote: newDownvote,
-                    voteStatus: value,
-                  } as any
-                );
               }
             },
             createPost: (_result, _args, cache, _info) => {

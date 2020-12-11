@@ -12,6 +12,7 @@ query Post($id: Int!) {
     creator {
       id
       username
+      avatar
     }
   }
 }

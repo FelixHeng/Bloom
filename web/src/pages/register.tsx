@@ -24,7 +24,7 @@ export const Register: React.FC<registerProps> = ({}) => {
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
-            router.push("/");
+            router.push("/choose-avatar");
           }
         }}
       >

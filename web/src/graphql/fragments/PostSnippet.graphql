@@ -11,5 +11,6 @@ fragment PostSnippet on Post {
   creator {
     id
     username
+    avatar
   }
 }

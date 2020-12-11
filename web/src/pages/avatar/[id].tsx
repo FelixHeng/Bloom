@@ -2,18 +2,18 @@ import React from "react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useRouter } from "next/router";
-import { usePostQuery } from "../../generated/graphql";
+import { useGetAvatarQuery } from "../../generated/graphql";
 import { Layout } from "../../components/Layout";
 import { Heading, Box, Link } from "@chakra-ui/core";
 import { EditDeletePostButtons } from "../../utils/EditDeletePostButtons";
 import { Image } from "cloudinary-react";
 import NextLink from "next/link";
 
-const Post = ({}) => {
+const Avatar = ({}) => {
   const router = useRouter();
   const intId =
     typeof router.query.id === "string" ? parseInt(router.query.id) : -1;
-  const [{ data, error, fetching }] = usePostQuery({
+  const [{ data, error, fetching }] = useGetAvatarQuery({
     pause: intId === -1,
     variables: {
       id: intId,
@@ -32,7 +32,7 @@ const Post = ({}) => {
     return <div>{error.message}</div>;
   }
 
-  if (!data?.post) {
+  if (!data?.avatar) {
     return (
       <Layout>
         <Box>could not find post</Box>
@@ -42,21 +42,15 @@ const Post = ({}) => {
 
   return (
     <Layout>
-      <Heading mb={4}>{data.post.title}</Heading>
-      <Box mb={8}>{data.post.text}</Box>
-      <EditDeletePostButtons
-        id={data.post.id}
-        creatorId={data.post.creator.id}
-      />
-      <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}>
+      <NextLink href="/avatar/[id]" as={`/avatar/${data.avatar.avatar}`}>
         <Image
           style={{ width: 100 }}
           cloudName="felixh"
-          publicId={data?.post?.creator.avatar}
+          publicId={data?.avatar.avatar}
         />
       </NextLink>
     </Layout>
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Post);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Avatar);

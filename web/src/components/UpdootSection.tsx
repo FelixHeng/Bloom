@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { Flex, Icon, IconButton } from "@chakra-ui/core";
+import { Flex, Icon, IconButton, Img } from "@chakra-ui/core";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import { AiOutlineFire } from "react-icons/ai";
+import {
+  AiFillAlert,
+  AiFillBell,
+  AiFillCaretLeft,
+  AiFillChrome,
+  AiFillCloud,
+  AiFillCrown,
+  AiOutlineFire,
+} from "react-icons/ai";
 import { PostSnippetFragment, useVoteMutation } from "../generated/graphql";
 
 interface UpdootSectionProps {
@@ -13,9 +21,9 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
     "updoot-loading" | "downdoot-loading" | "not-loading"
   >("not-loading");
   const [, vote] = useVoteMutation();
+
   return (
     <Flex direction="column" justifyContent="center" alignItems="center" mr={4}>
-      <Icon boxSize={10} as={AiOutlineFire} />
       <Flex
         direction="initial"
         justifyContent="center"
@@ -69,7 +77,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
           aria-label="downdoot vote"
           icon={<FaRegThumbsDown />}
         />
-        {post.downvote}
+        {Math.abs(post.downvote)}
       </Flex>
     </Flex>
   );
