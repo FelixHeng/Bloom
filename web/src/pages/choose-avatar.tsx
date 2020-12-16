@@ -57,13 +57,13 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
   console.log("publicId", public_Id);
   return (
     <Box
-      bgImage="url(https://wallpaperaccess.com/download/dark-hd-flowers-1749368)"
+      // bgImage="url(https://wallpaperaccess.com/download/dark-hd-flowers-1749368)"
       bgSize="cover"
       bgRepeat="no-repeat"
     >
       <Layout>
         <Box align="center" flexDirection="column">
-          <Heading color="white" mt="5em">
+          <Heading color="black" mt="5em">
             CHOOSE AN AVATAR
           </Heading>
           <Box
@@ -98,7 +98,14 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
           </Box>
 
           <Box align="center" pb="20em">
-            <Button onClick={uploadImage} mt="3em">
+            <Button
+              onClick={uploadImage}
+              mt="3em"
+              bg="#9ac8fc"
+              color="white"
+              fontWeight="bolder"
+              fontSize="20px"
+            >
               Upload Image
             </Button>
           </Box>

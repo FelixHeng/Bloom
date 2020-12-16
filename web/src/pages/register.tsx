@@ -50,7 +50,10 @@ export const Register: React.FC<registerProps> = ({}) => {
               mt={4}
               type="submit"
               isLoading={isSubmitting}
-              colorScheme="teal"
+              bg="#9ac8fc"
+              color="white"
+              fontWeight="bolder"
+              fontSize="20px"
             >
               Register
             </Button>
