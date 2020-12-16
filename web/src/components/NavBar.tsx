@@ -4,8 +4,7 @@ import NextLink from "next/link";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 import { useRouter } from "next/router";
-import { IoMdLogOut, IoLogOutOutline } from "react-icons/io5";
-import { BsPencilSquare } from "react-icons/bs";
+import { IoLogOutOutline } from "react-icons/io5";
 
 interface NavBarProps {}
 
@@ -23,12 +22,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <>
         <NextLink href="/login">
-          <Link color="white" mr={2}>
+          <Link color="white" mr={4} fontSize="1.2em" fontWeight="bold">
             login
           </Link>
         </NextLink>
         <NextLink href="/register">
-          <Link color="white">register</Link>
+          <Link color="white" fontSize="1.2em" fontWeight="bold">
+            register
+          </Link>
         </NextLink>
       </>
     );

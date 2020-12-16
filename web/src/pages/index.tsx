@@ -45,7 +45,7 @@ const Index = () => {
           {data?.posts.posts.map((p) =>
             !p ? null : (
               <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
-                <NextLink href="/avatar/[id]" as={`/avatar/${p.creator.id}`}>
+                <NextLink href="/profile/[id]" as={`/profile/${p.creator.id}`}>
                   <Link>
                     <Heading fontSize="xl">{p.creator.username}</Heading>
                     <Image
