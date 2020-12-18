@@ -8,6 +8,7 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
+import { Layout } from "../components/Layout";
 
 interface registerProps {}
 
@@ -15,7 +16,8 @@ export const Register: React.FC<registerProps> = ({}) => {
   const router = useRouter();
   const [, register] = useRegisterMutation();
   return (
-    <Wrapper variant="small">
+    // <Wrapper variant="small">
+    <Layout variant="small">
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -24,7 +26,7 @@ export const Register: React.FC<registerProps> = ({}) => {
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
-            router.push("/");
+            router.push("/choose-avatar");
           }
         }}
       >
@@ -50,14 +52,18 @@ export const Register: React.FC<registerProps> = ({}) => {
               mt={4}
               type="submit"
               isLoading={isSubmitting}
-              colorScheme="teal"
+              bg="#9ac8fc"
+              color="white"
+              fontWeight="bolder"
+              fontSize="17px"
             >
               Register
             </Button>
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </Layout>
+    // {/* </Wrapper> */}
   );
 };
 

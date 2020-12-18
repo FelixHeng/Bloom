@@ -71,6 +71,20 @@ export class PostResolver {
   ) {
     const isUpdoot = value !== -1;
     const realValue = isUpdoot ? 1 : -1;
+    let changeVote = {
+      upvote: 0,
+      downvote: 0,
+    };
+    const changePoints = isUpdoot
+      ? ((changeVote.upvote = 1), (changeVote.downvote = -1))
+      : ((changeVote.downvote = 1), (changeVote.upvote = -1));
+    const initialVote = {
+      upvote: 0,
+      downvote: 0,
+    };
+    const firstVote = isUpdoot
+      ? (initialVote.upvote = 1)
+      : (initialVote.downvote = 1);
     const { userId } = req.session;
 
     const updoot = await Updoot.findOne({ where: { postId, userId } });
@@ -91,10 +105,11 @@ export class PostResolver {
         await tm.query(
           `
           update post
-          set points = points + $1
-          where id = $2
-        `,
-          [2 * realValue, postId]
+          set points = points + ${realValue},
+            upvote = upvote + ${changeVote.upvote},
+            downvote = downvote + ${changeVote.downvote} 
+          where id = ${postId}
+        `
         );
       });
     } else if (!updoot) {
@@ -111,10 +126,11 @@ export class PostResolver {
         await tm.query(
           `
     update post
-    set points = points + $1
-    where id = $2
-      `,
-          [realValue, postId]
+    set points = points + ${realValue},
+      upvote = upvote + ${initialVote.upvote},
+      downvote = downvote +  ${initialVote.downvote} 
+    where id = ${postId}
+      `
         );
       });
     }
@@ -127,7 +143,7 @@ export class PostResolver {
     @Arg("cursor", () => String, { nullable: true }) cursor: string | null
   ): Promise<PaginatedPosts> {
     // 20 -> 21
-    const realLimit = Math.min(50, limit);
+    const realLimit = Math.min(5, limit);
     const realLimitPlusOne = realLimit + 1;
 
     const replacements: any[] = [realLimitPlusOne];

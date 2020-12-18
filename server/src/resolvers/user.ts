@@ -8,6 +8,8 @@ import {
   Query,
   FieldResolver,
   Root,
+  UseMiddleware,
+  Int,
 } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from "../entities/User";
@@ -17,6 +19,8 @@ import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { validateRegister } from "../utils/validateRegister";
 import { sendEmail } from "../utils/sendEmail";
 import { v4 } from "uuid";
+import { getConnection } from "typeorm";
+import { isAuth } from "../middleware/isAuth";
 
 @ObjectType()
 class FieldError {
@@ -238,5 +242,32 @@ export class UserResolver {
         resolve(true);
       })
     );
+  }
+
+  @Mutation(() => User)
+  @UseMiddleware(isAuth)
+  async chooseAvatar(
+    @Arg("publicId") publicId: string,
+    @Ctx() { req }: MyContext
+  ) {
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set({ avatar: publicId })
+      .where("id = :id", {
+        id: req.session.userId,
+      })
+      .returning("*")
+      .execute();
+    return result.raw[0];
+  }
+
+  @Query(() => User, { nullable: true })
+  avatar(@Arg("id", () => Int) id: number): Promise<User | undefined> {
+    const avatar = User.findOne(id);
+    if (!avatar) {
+      return null as any;
+    }
+    return avatar;
   }
 }

@@ -5,11 +5,14 @@ query Post($id: Int!) {
     updatedAt
     title
     points
+    upvote
+    downvote
     text
     voteStatus
     creator {
       id
       username
+      avatar
     }
   }
 }

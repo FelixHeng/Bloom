@@ -4,10 +4,13 @@ fragment PostSnippet on Post {
   updatedAt
   title
   points
+  upvote
+  downvote
   textSnippet
   voteStatus
   creator {
     id
     username
+    avatar
   }
 }
