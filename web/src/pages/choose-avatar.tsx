@@ -29,14 +29,14 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
     });
   }, [public_Id]);
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = (e: any) => {
     const file = e.target.files[0];
     previewFile(file);
     setImageSelected(file);
     // setFileInputState(e.target.value);
   };
 
-  const previewFile = (file) => {
+  const previewFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
