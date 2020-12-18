@@ -5,7 +5,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { useAvatarMutation } from "../generated/graphql";
 import { useIsAuth } from "../utils/useIsAuth";
 import { Layout } from "../components/Layout";
-import { Button, Img, Input, Box, Heading } from "@chakra-ui/core";
+import { Button, Img, Input, Box, Heading, Flex } from "@chakra-ui/core";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 
@@ -56,55 +56,65 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
   };
   console.log("publicId", public_Id);
   return (
-    <Box
-      bgImage="url(https://wallpaperaccess.com/download/dark-hd-flowers-1749368)"
-      bgSize="cover"
-      bgRepeat="no-repeat"
-    >
-      <Layout>
-        <Box align="center" flexDirection="column">
-          <Heading color="white" mt="5em">
-            CHOOSE AN AVATAR
-          </Heading>
-          <Box
-            {...getRootProps()}
-            type="file"
-            bg="white"
-            borderRadius="300px"
-            height="300px"
-            width="300px"
-            cursor="pointer"
-            mt="5em"
-          >
-            <Input {...getInputProps()} onChange={handleFileInputChange} />
-            <p>
-              {previewSource ? (
-                <Img
-                  src={previewSource}
-                  alt="chosen"
-                  height="300px"
-                  borderRadius="300px"
-                  // pb="2em"
-                  // style={{ height: "300px", }}
-                />
-              ) : (
-                <Img
-                  src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
-                  height="300px"
-                  borderRadius="300px"
-                />
-              )}
-            </p>
-          </Box>
-
-          <Box align="center" pb="20em">
-            <Button onClick={uploadImage} mt="3em">
-              Upload Image
-            </Button>
-          </Box>
+    <Layout>
+      <Flex
+        align="center"
+        flexDirection="column"
+        border="2px black solid"
+        w="70%"
+        h="40em"
+        m="auto"
+      >
+        <Heading color="black" mt="2em" align="center">
+          CLICK BELOW TO
+          <br />
+          CHOOSE YOUR AVATAR
+        </Heading>
+        <Box
+          {...getRootProps()}
+          type="file"
+          bg="white"
+          borderRadius="300px"
+          height="300px"
+          width="300px"
+          cursor="pointer"
+          mt="5em"
+        >
+          <Input {...getInputProps()} onChange={handleFileInputChange} />
+          <p>
+            {previewSource ? (
+              <Img
+                src={previewSource}
+                alt="chosen"
+                height="300px"
+                borderRadius="300px"
+                // pb="2em"
+                // style={{ height: "300px", }}
+              />
+            ) : (
+              <Img
+                src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+                height="300px"
+                borderRadius="300px"
+              />
+            )}
+          </p>
         </Box>
-      </Layout>
-    </Box>
+
+        <Box align="center" pb="20em">
+          <Button
+            onClick={uploadImage}
+            mt="3em"
+            bg="#9ac8fc"
+            color="white"
+            fontWeight="bolder"
+            fontSize="20px"
+          >
+            Upload Image
+          </Button>
+        </Box>
+      </Flex>
+    </Layout>
   );
 };
 

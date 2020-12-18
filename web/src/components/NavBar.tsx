@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Button, Flex, Heading, Link } from "@chakra-ui/core";
+import { Box, Flex, Heading, IconButton, Link } from "@chakra-ui/core";
 import NextLink from "next/link";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 import { useRouter } from "next/router";
+import { IoLogOutOutline } from "react-icons/io5";
 
 interface NavBarProps {}
 
@@ -21,12 +22,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <>
         <NextLink href="/login">
-          <Link color="white" mr={2}>
+          <Link color="white" mr={4} fontSize="1.2em" fontWeight="bold">
             login
           </Link>
         </NextLink>
         <NextLink href="/register">
-          <Link color="white">register</Link>
+          <Link color="white" fontSize="1.2em" fontWeight="bold">
+            register
+          </Link>
         </NextLink>
       </>
     );
@@ -34,34 +37,43 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   } else {
     body = (
       <Flex align="center">
-        <NextLink href="/create-post">
-          <Button as={Link} mr={4}>
-            create post
-          </Button>
-        </NextLink>
-        <Box color="white" mr={2}>
+        {/* <NextLink href="/create-post">
+          <IconButton
+            as={Link}
+            mr={10}
+            // variant="outline"
+            colorScheme="white"
+            icon={<BsPencilSquare size="35px" />}
+            aria-label="Edit Post"
+          />
+        </NextLink> */}
+
+        <Box color="white" mr={18} fontWeight="bolder" fontSize="1.5em">
           {data.me.username}
         </Box>
-        <Button
+        <IconButton
+          aria-label="Logout"
+          color="black"
           onClick={async () => {
             await logout();
             router.reload();
           }}
           isLoading={logoutFetching}
           variant="link"
-        >
-          logout
-        </Button>
+          icon={<IoLogOutOutline size="30px" />}
+        />
       </Flex>
     );
   }
 
   return (
-    <Flex zIndex={1} position="sticky" top={0} bg="#091f42" p={4}>
+    <Flex zIndex={1} position="sticky" top={0} bg="#9ac8fc" p={4}>
       <Flex flex={1} m="auto" maxW={800} align="center">
         <NextLink href="/">
           <Link>
-            <Heading color={"white"}>Blooming</Heading>
+            <Heading color={"white"} fontWeight="bolder" fontSize="2em">
+              BlටටM
+            </Heading>
           </Link>
         </NextLink>
         <Box ml={"auto"}>{body}</Box>

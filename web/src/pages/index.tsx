@@ -1,21 +1,35 @@
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { usePostsQuery } from "../generated/graphql";
+import { useMeQuery, usePostsQuery } from "../generated/graphql";
 import { Layout } from "../components/Layout";
-import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Stack,
+  Text,
+  IconButton,
+} from "@chakra-ui/core";
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { UpdootSection } from "../components/UpdootSection";
 import { EditDeletePostButtons } from "../utils/EditDeletePostButtons";
 import { Image } from "cloudinary-react";
+import CreatePost from "../components/create-post";
+import { isServer } from "../utils/isServer";
 
 const Index = () => {
   const [variables, setVariables] = useState({
-    limit: 15,
+    limit: 5,
     cursor: null as null | string,
   });
   const [{ data, fetching }] = usePostsQuery({
     variables,
+  });
+  const [{ data: dataMe, fetching: fetchingMe }] = useMeQuery({
+    pause: isServer(),
   });
 
   if (!fetching && !data) {
@@ -23,6 +37,7 @@ const Index = () => {
   }
   return (
     <Layout>
+      {!dataMe?.me ? null : <CreatePost />}
       {!data && fetching ? (
         <div>Loading...</div>
       ) : (
@@ -30,7 +45,7 @@ const Index = () => {
           {data?.posts.posts.map((p) =>
             !p ? null : (
               <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
-                <NextLink href="/avatar/[id]" as={`/avatar/${p.creator.id}`}>
+                <NextLink href="/profile/[id]" as={`/profile/${p.creator.id}`}>
                   <Link>
                     <Heading fontSize="xl">{p.creator.username}</Heading>
                     <Image
