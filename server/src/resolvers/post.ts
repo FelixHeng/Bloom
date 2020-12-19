@@ -75,16 +75,14 @@ export class PostResolver {
       upvote: 0,
       downvote: 0,
     };
-    const changePoints = isUpdoot
+    isUpdoot
       ? ((changeVote.upvote = 1), (changeVote.downvote = -1))
       : ((changeVote.downvote = 1), (changeVote.upvote = -1));
     const initialVote = {
       upvote: 0,
       downvote: 0,
     };
-    const firstVote = isUpdoot
-      ? (initialVote.upvote = 1)
-      : (initialVote.downvote = 1);
+    isUpdoot ? (initialVote.upvote = 1) : (initialVote.downvote = 1);
     const { userId } = req.session;
 
     const updoot = await Updoot.findOne({ where: { postId, userId } });

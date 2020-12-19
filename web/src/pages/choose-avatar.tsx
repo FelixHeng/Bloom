@@ -40,7 +40,7 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setPreviewSource(reader.result);
+      setPreviewSource(reader.result as any);
     };
   };
 
@@ -80,7 +80,7 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
           cursor="pointer"
           mt="5em"
         >
-          <Input {...getInputProps()} onChange={handleFileInputChange} />
+          <input {...getInputProps()} onChange={handleFileInputChange} />
           <p>
             {previewSource ? (
               <Img
@@ -103,7 +103,7 @@ export const ChooseAvatar: React.FC<ChooseAvatarProps> = ({}) => {
 
         <Box align="center" pb="20em">
           <Button
-            onClick={uploadImage}
+            onClick={uploadImage as any}
             mt="3em"
             bg="#9ac8fc"
             color="white"
