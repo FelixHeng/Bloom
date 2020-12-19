@@ -32,6 +32,7 @@ const main = async () => {
 
   // Pour delete tous les posts en cas de conflit avec la db
   // await Updoot.delete({});
+  // await User.delete({});
 
   const app = express();
 
