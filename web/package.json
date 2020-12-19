@@ -12,6 +12,7 @@
     "@chakra-ui/core": "^1.0.0-rc.8",
     "@chakra-ui/icons": "^1.0.1",
     "@emotion/styled": "^10.0.27",
+    "@types/react": "^17.0.0",
     "@urql/exchange-graphcache": "^3.1.11",
     "axios": "^0.21.0",
     "cloudinary-react": "^1.6.8",
