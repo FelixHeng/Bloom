@@ -4,7 +4,7 @@ import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useRouter } from "next/router";
 import { usePostQuery } from "../../generated/graphql";
 import { Layout } from "../../components/Layout";
-import { Heading, Box, Link } from "@chakra-ui/core";
+import { Heading, Box, Link, Flex, flexbox } from "@chakra-ui/core";
 import { EditDeletePostButtons } from "../../utils/EditDeletePostButtons";
 import { Image } from "cloudinary-react";
 import NextLink from "next/link";
@@ -42,19 +42,21 @@ const Post = ({}) => {
 
   return (
     <Layout>
+      {/* <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}> */}
+      <Image
+        style={{ width: 100 }}
+        cloudName="felixh"
+        publicId={data?.post?.creator.avatar}
+      />
+      {/* </NextLink> */}
       <Heading mb={4}>{data.post.title}</Heading>
       <Box mb={8}>{data.post.text}</Box>
-      <EditDeletePostButtons
-        id={data.post.id}
-        creatorId={data.post.creator.id}
-      />
-      <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}>
-        <Image
-          style={{ width: 100 }}
-          cloudName="felixh"
-          publicId={data?.post?.creator.avatar}
+      <Flex flex={1} justifyContent="flex-end">
+        <EditDeletePostButtons
+          id={data.post.id}
+          creatorId={data.post.creator.id}
         />
-      </NextLink>
+      </Flex>
     </Layout>
   );
 };
