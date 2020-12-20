@@ -1,5 +1,6 @@
 import { NavBar } from "./NavBar";
 import { Wrapper, WrapperVariant } from "./Wrapper";
+import { Box } from "@chakra-ui/core";
 
 interface LayoutProps {
   variant?: WrapperVariant;

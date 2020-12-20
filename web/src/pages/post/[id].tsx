@@ -7,6 +7,7 @@ import { Layout } from "../../components/Layout";
 import { Heading, Box, Link, Flex, flexbox } from "@chakra-ui/core";
 import { EditDeletePostButtons } from "../../utils/EditDeletePostButtons";
 import { Image } from "cloudinary-react";
+import { UpdootSection } from "../../components/UpdootSection";
 import NextLink from "next/link";
 
 const Post = ({}) => {
@@ -51,11 +52,29 @@ const Post = ({}) => {
       {/* </NextLink> */}
       <Heading mb={4}>{data.post.title}</Heading>
       <Box mb={8}>{data.post.text}</Box>
-      <Flex flex={1} justifyContent="flex-end">
+      <Flex flex={1} justifyContent="space-between" alignItems="center">
+        <UpdootSection post={data.post} />
+
         <EditDeletePostButtons
           id={data.post.id}
           creatorId={data.post.creator.id}
         />
+      </Flex>
+      <Flex justifyContent="center" mt={10}>
+        <NextLink href="/">
+          <Link
+            bg="#9ac8fc"
+            color="white"
+            fontWeight="bolder"
+            fontSize="20px"
+            style={{ textDecoration: "none" }}
+            borderRadius={6}
+            padding="10px"
+            textAlign="center"
+          >
+            View all posts
+          </Link>
+        </NextLink>
       </Flex>
     </Layout>
   );

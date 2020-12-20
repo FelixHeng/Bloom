@@ -24,14 +24,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
 
   return (
     <Flex direction="column" justifyContent="center" alignItems="center" mr={4}>
-      <Flex
-        direction="initial"
-        justifyContent="center"
-        alignItems="center"
-        mr={4}
-        ml={4}
-        mt={4}
-      >
+      <Flex direction="initial" justifyContent="center" alignItems="center">
         {post.upvote}
 
         <IconButton
@@ -70,7 +63,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
           }}
           isLoading={loadingState === "downdoot-loading"}
           size="sm"
-          ml={4}
+          ml={2}
           mr={2}
           variant="outline"
           colorScheme={post.voteStatus === -1 ? "red" : undefined}

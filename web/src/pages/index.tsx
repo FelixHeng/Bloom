@@ -65,7 +65,7 @@ const Index = () => {
                       />
                     </Box>
                   </Flex>
-                  <Box width={100} align="left">
+                  <Box width={100} align="left" mt={4} mr={4} ml={4}>
                     <UpdootSection post={p} />
                   </Box>
                 </Box>
