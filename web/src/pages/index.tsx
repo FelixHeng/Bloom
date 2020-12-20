@@ -58,7 +58,6 @@ const Index = () => {
                     <Text mt={4} flex={1}>
                       {p.textSnippet}
                     </Text>
-                    <Box></Box>
                     <Box ml="auto">
                       <EditDeletePostButtons
                         id={p.id}
