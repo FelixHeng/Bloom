@@ -39,10 +39,10 @@ class PaginatedPosts {
 export class PostResolver {
   @FieldResolver(() => String, { nullable: true })
   textSnippet(@Root() post: Post) {
-    if (post.text.length > 50) {
-      return post.text.slice(0, 50) + "...";
+    if (post.text.length > 100) {
+      return post.text.slice(0, 100) + "...";
     }
-    return post.text.slice(0, 50);
+    return post.text.slice(0, 100);
   }
 
   @FieldResolver(() => User)

@@ -29,6 +29,7 @@ export const EditDeletePostButtons: React.FC<EditDeletePostButtonsProps> = ({
           colorScheme="blue"
           icon={<EditIcon />}
           aria-label="Edit Post"
+          mb={2}
         />
       </NextLink>
       <IconButton
@@ -39,6 +40,7 @@ export const EditDeletePostButtons: React.FC<EditDeletePostButtonsProps> = ({
         onClick={() => {
           deletePost({ id });
         }}
+        mb={2}
       />
     </Box>
   );

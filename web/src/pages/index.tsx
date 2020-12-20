@@ -2,7 +2,17 @@ import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useMeQuery, usePostsQuery } from "../generated/graphql";
 import { Layout } from "../components/Layout";
-import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  layoutPropNames,
+  Link,
+  propNames,
+  Stack,
+  Text,
+} from "@chakra-ui/core";
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { UpdootSection } from "../components/UpdootSection";
@@ -35,15 +45,27 @@ const Index = () => {
         <Stack spacing={8}>
           {data?.posts.posts.map((p) =>
             !p ? null : (
-              <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
+              <Flex
+                key={p.id}
+                p={5}
+                shadow="md"
+                borderWidth="1px"
+                flexDirection="column"
+              >
                 <NextLink href="/profile/[id]" as={`/profile/${p.creator.id}`}>
                   <Link>
-                    <Heading fontSize="xl">{p.creator.username}</Heading>
-                    <Image
-                      style={{ width: 100 }}
-                      cloudName="felixh"
-                      publicId={p.creator.avatar}
-                    />
+                    <Flex justifyContent="center">
+                      <Heading fontSize="xl">{p.creator.username}</Heading>
+                    </Flex>
+                    <Flex mx="auto" width="100px">
+                      <Image
+                        // style={{
+                        //   width: 100,
+                        // }}
+                        cloudName="felixh"
+                        publicId={p.creator.avatar}
+                      />
+                    </Flex>
                   </Link>
                 </NextLink>
 
@@ -58,6 +80,9 @@ const Index = () => {
                     <Text mt={4} flex={1}>
                       {p.textSnippet}
                     </Text>
+                  </Flex>
+                  <Flex mt={4}>
+                    <UpdootSection post={p} />
                     <Box ml="auto">
                       <EditDeletePostButtons
                         id={p.id}
@@ -65,9 +90,6 @@ const Index = () => {
                       />
                     </Box>
                   </Flex>
-                  <Box width={100} align="left" mt={4} mr={4} ml={4}>
-                    <UpdootSection post={p} />
-                  </Box>
                 </Box>
               </Flex>
             )
