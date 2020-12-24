@@ -43,7 +43,6 @@ const Post = ({}) => {
 
   return (
     <Layout>
-      {/* <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}> */}
       <Flex
         shadow="md"
         borderWidth="1px"
@@ -90,13 +89,14 @@ const Post = ({}) => {
           <NextLink href="/">
             <Link
               bg="#9ac8fc"
-              color="white"
+              color="black"
               fontWeight="bolder"
               fontSize="20px"
               style={{ textDecoration: "none" }}
               borderRadius={6}
               padding="10px"
               textAlign="center"
+              borderWidth="1px"
             >
               View all posts
             </Link>

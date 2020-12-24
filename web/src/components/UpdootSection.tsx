@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { Flex, Icon, IconButton, Img } from "@chakra-ui/core";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import {
-  AiFillAlert,
-  AiFillBell,
-  AiFillCaretLeft,
-  AiFillChrome,
-  AiFillCloud,
-  AiFillCrown,
-  AiOutlineFire,
-} from "react-icons/ai";
 import { PostSnippetFragment, useVoteMutation } from "../generated/graphql";
 
 interface UpdootSectionProps {
