@@ -70,7 +70,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     <Flex zIndex={1} position="sticky" top={0} bg="#9ac8fc" p={4}>
       <Flex flex={1} m="auto" maxW={800} align="center">
         <NextLink href="/">
-          <Link>
+          <Link style={{ textDecoration: "none" }}>
             <Heading color={"white"} fontWeight="bolder" fontSize="2em">
               BlටටM
             </Heading>

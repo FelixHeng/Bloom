@@ -4,9 +4,10 @@ import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useRouter } from "next/router";
 import { usePostQuery } from "../../generated/graphql";
 import { Layout } from "../../components/Layout";
-import { Heading, Box, Link } from "@chakra-ui/core";
+import { Heading, Box, Link, Flex, Text } from "@chakra-ui/core";
 import { EditDeletePostButtons } from "../../utils/EditDeletePostButtons";
 import { Image } from "cloudinary-react";
+import { UpdootSection } from "../../components/UpdootSection";
 import NextLink from "next/link";
 
 const Post = ({}) => {
@@ -42,19 +43,66 @@ const Post = ({}) => {
 
   return (
     <Layout>
-      <Heading mb={4}>{data.post.title}</Heading>
-      <Box mb={8}>{data.post.text}</Box>
-      <EditDeletePostButtons
-        id={data.post.id}
-        creatorId={data.post.creator.id}
-      />
-      <NextLink href="/avatar/[id]" as={`/avatar/${data.post.creator.id}`}>
-        <Image
-          style={{ width: 100 }}
-          cloudName="felixh"
-          publicId={data?.post?.creator.avatar}
-        />
-      </NextLink>
+      <Flex
+        shadow="md"
+        borderWidth="1px"
+        flexDirection="column"
+        backgroundColor="#9ac8fc3b"
+        padding="30px"
+      >
+        <NextLink href="/profile/[id]" as={`/profile/${data.post.creator.id}`}>
+          <Link style={{ textDecoration: "none" }}>
+            <Flex justifyContent="center">
+              <Heading fontSize="xl">{data.post.creator.username}</Heading>
+            </Flex>
+            <Flex
+              mx="auto"
+              width="100px"
+              border="2px"
+              borderRadius="10%"
+              marginBottom="30px"
+            >
+              <Image
+                style={{ width: 100 }}
+                cloudName="felixh"
+                publicId={data?.post?.creator.avatar}
+              />
+            </Flex>
+          </Link>
+        </NextLink>
+        <Heading mb={4}>{data.post.title}</Heading>
+        <Box mb={2}>{data.post.text}</Box>
+        <Flex mb={8} justifyContent="flex-end">
+          <Text fontSize="small" color="grey">
+            posted by {data.post.creator.username}
+          </Text>
+        </Flex>
+        <Flex flex={1} justifyContent="space-between" alignItems="center">
+          <UpdootSection post={data.post} />
+
+          <EditDeletePostButtons
+            id={data.post.id}
+            creatorId={data.post.creator.id}
+          />
+        </Flex>
+        <Flex justifyContent="center" mt={10}>
+          <NextLink href="/">
+            <Link
+              bg="#9ac8fc"
+              color="black"
+              fontWeight="bolder"
+              fontSize="20px"
+              style={{ textDecoration: "none" }}
+              borderRadius={6}
+              padding="10px"
+              textAlign="center"
+              borderWidth="1px"
+            >
+              View all posts
+            </Link>
+          </NextLink>
+        </Flex>
+      </Flex>
     </Layout>
   );
 };
