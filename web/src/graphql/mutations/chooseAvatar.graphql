@@ -1,0 +1,5 @@
+mutation avatar($publicId: String!) {
+  chooseAvatar(publicId: $publicId) {
+    avatar
+  }
+}

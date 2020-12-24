@@ -1,8 +1,12 @@
-import { EntityManager, IDatabaseDriver, Connection } from "@mikro-orm/core";
 import { Request, Response } from "express";
+import { Redis } from "ioredis";
+import { createUserLoader } from "./utils/createUserLoader";
+import { createUpdootLoader } from "./utils/createUpdootLoader";
 
 export type MyContext = {
-  em: EntityManager<any> & EntityManager<IDatabaseDriver<Connection>>;
   req: Request & { session: { userId?: number } };
+  redis: Redis;
   res: Response;
+  userLoader: ReturnType<typeof createUserLoader>;
+  updootLoader: ReturnType<typeof createUpdootLoader>;
 };

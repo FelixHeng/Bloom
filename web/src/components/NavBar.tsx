@@ -1,12 +1,15 @@
 import React from "react";
-import { Box, Button, Flex, Link } from "@chakra-ui/core";
+import { Box, Flex, Heading, IconButton, Link } from "@chakra-ui/core";
 import NextLink from "next/link";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
+import { useRouter } from "next/router";
+import { IoLogOutOutline } from "react-icons/io5";
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
+  const router = useRouter();
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   const [{ data, fetching }] = useMeQuery({ pause: isServer() });
   let body = null;
@@ -19,38 +22,62 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <>
         <NextLink href="/login">
-          <Link color="white" mr={2}>
+          <Link color="white" mr={4} fontSize="1.2em" fontWeight="bold">
             login
           </Link>
         </NextLink>
         <NextLink href="/register">
-          <Link color="white">register</Link>
+          <Link color="white" fontSize="1.2em" fontWeight="bold">
+            register
+          </Link>
         </NextLink>
       </>
     );
     // user is logged in
   } else {
     body = (
-      <Flex>
-        <Box color="white" mr={2}>
+      <Flex align="center">
+        {/* <NextLink href="/create-post">
+          <IconButton
+            as={Link}
+            mr={10}
+            // variant="outline"
+            colorScheme="white"
+            icon={<BsPencilSquare size="35px" />}
+            aria-label="Edit Post"
+          />
+        </NextLink> */}
+
+        <Box color="white" mr={18} fontWeight="bolder" fontSize="1.5em">
           {data.me.username}
         </Box>
-        <Button
-          onClick={() => {
-            logout();
+        <IconButton
+          aria-label="Logout"
+          color="black"
+          onClick={async () => {
+            await logout();
+            router.reload();
           }}
           isLoading={logoutFetching}
           variant="link"
-        >
-          logout
-        </Button>
+          icon={<IoLogOutOutline size="30px" />}
+        />
       </Flex>
     );
   }
 
   return (
-    <Flex bg="#091f42" p={4}>
-      <Box ml={"auto"}>{body}</Box>
+    <Flex zIndex={1} position="sticky" top={0} bg="#9ac8fc" p={4}>
+      <Flex flex={1} m="auto" maxW={800} align="center">
+        <NextLink href="/">
+          <Link style={{ textDecoration: "none" }}>
+            <Heading color={"white"} fontWeight="bolder" fontSize="2em">
+              BlටටM
+            </Heading>
+          </Link>
+        </NextLink>
+        <Box ml={"auto"}>{body}</Box>
+      </Flex>
     </Flex>
   );
 };

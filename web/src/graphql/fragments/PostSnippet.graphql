@@ -1,0 +1,16 @@
+fragment PostSnippet on Post {
+  id
+  createdAt
+  updatedAt
+  title
+  points
+  upvote
+  downvote
+  textSnippet
+  voteStatus
+  creator {
+    id
+    username
+    avatar
+  }
+}
